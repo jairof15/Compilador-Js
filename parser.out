@@ -1,0 +1,1053 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ARROW
+    ASYNC
+    AWAIT
+    COLON
+    COMMENT
+    ELSE
+    EQUALS
+    FUNCTION
+    GT
+    IF
+    LBRACE
+    LBRACKET
+    LT
+    NEW
+    NOTEQUALS
+    PROMISE
+    RBRACE
+    RBRACKET
+    RETURN
+    TERNARY
+    WHILE
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> statements
+Rule 2     statements -> statement
+Rule 3     statements -> statements statement
+Rule 4     statement -> expression SEMICOLON
+Rule 5     statement -> declaration SEMICOLON
+Rule 6     statement -> assignment SEMICOLON
+Rule 7     statement -> method_call SEMICOLON
+Rule 8     declaration -> VAR ID
+Rule 9     declaration -> LET ID
+Rule 10    declaration -> CONST ID
+Rule 11    declaration -> VAR ID ASSIGN expression
+Rule 12    declaration -> LET ID ASSIGN expression
+Rule 13    declaration -> CONST ID ASSIGN expression
+Rule 14    assignment -> ID ASSIGN expression
+Rule 15    expression -> term
+Rule 16    expression -> expression PLUS term
+Rule 17    expression -> expression MINUS term
+Rule 18    term -> factor
+Rule 19    term -> term TIMES factor
+Rule 20    term -> term DIVIDE factor
+Rule 21    factor -> NUMBER
+Rule 22    factor -> STRING
+Rule 23    factor -> ID
+Rule 24    factor -> LPAREN expression RPAREN
+Rule 25    factor -> method_call
+Rule 26    method_call -> CONSOLE DOT LOG LPAREN arguments RPAREN
+Rule 27    method_call -> ID DOT ID LPAREN arguments RPAREN
+Rule 28    arguments -> <empty>
+Rule 29    arguments -> expression
+Rule 30    arguments -> arguments COMMA expression
+
+Terminals, with rules where they appear
+
+ARROW                : 
+ASSIGN               : 11 12 13 14
+ASYNC                : 
+AWAIT                : 
+COLON                : 
+COMMA                : 30
+COMMENT              : 
+CONSOLE              : 26
+CONST                : 10 13
+DIVIDE               : 20
+DOT                  : 26 27
+ELSE                 : 
+EQUALS               : 
+FUNCTION             : 
+GT                   : 
+ID                   : 8 9 10 11 12 13 14 23 27 27
+IF                   : 
+LBRACE               : 
+LBRACKET             : 
+LET                  : 9 12
+LOG                  : 26
+LPAREN               : 24 26 27
+LT                   : 
+MINUS                : 17
+NEW                  : 
+NOTEQUALS            : 
+NUMBER               : 21
+PLUS                 : 16
+PROMISE              : 
+RBRACE               : 
+RBRACKET             : 
+RETURN               : 
+RPAREN               : 24 26 27
+SEMICOLON            : 4 5 6 7
+STRING               : 22
+TERNARY              : 
+TIMES                : 19
+VAR                  : 8 11
+WHILE                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+arguments            : 26 27 30
+assignment           : 6
+declaration          : 5
+expression           : 4 11 12 13 14 16 17 24 29 30
+factor               : 18 19 20
+method_call          : 7 25
+program              : 0
+statement            : 2 3
+statements           : 1 3
+term                 : 15 16 17 19 20
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . statements
+    (2) statements -> . statement
+    (3) statements -> . statements statement
+    (4) statement -> . expression SEMICOLON
+    (5) statement -> . declaration SEMICOLON
+    (6) statement -> . assignment SEMICOLON
+    (7) statement -> . method_call SEMICOLON
+    (15) expression -> . term
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (8) declaration -> . VAR ID
+    (9) declaration -> . LET ID
+    (10) declaration -> . CONST ID
+    (11) declaration -> . VAR ID ASSIGN expression
+    (12) declaration -> . LET ID ASSIGN expression
+    (13) declaration -> . CONST ID ASSIGN expression
+    (14) assignment -> . ID ASSIGN expression
+    (26) method_call -> . CONSOLE DOT LOG LPAREN arguments RPAREN
+    (27) method_call -> . ID DOT ID LPAREN arguments RPAREN
+    (18) term -> . factor
+    (19) term -> . term TIMES factor
+    (20) term -> . term DIVIDE factor
+    (21) factor -> . NUMBER
+    (22) factor -> . STRING
+    (23) factor -> . ID
+    (24) factor -> . LPAREN expression RPAREN
+    (25) factor -> . method_call
+
+    VAR             shift and go to state 9
+    LET             shift and go to state 11
+    CONST           shift and go to state 12
+    ID              shift and go to state 10
+    CONSOLE         shift and go to state 13
+    NUMBER          shift and go to state 16
+    STRING          shift and go to state 17
+    LPAREN          shift and go to state 14
+
+    program                        shift and go to state 1
+    statements                     shift and go to state 2
+    statement                      shift and go to state 3
+    expression                     shift and go to state 4
+    declaration                    shift and go to state 5
+    assignment                     shift and go to state 6
+    method_call                    shift and go to state 7
+    term                           shift and go to state 8
+    factor                         shift and go to state 15
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> statements .
+    (3) statements -> statements . statement
+    (4) statement -> . expression SEMICOLON
+    (5) statement -> . declaration SEMICOLON
+    (6) statement -> . assignment SEMICOLON
+    (7) statement -> . method_call SEMICOLON
+    (15) expression -> . term
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (8) declaration -> . VAR ID
+    (9) declaration -> . LET ID
+    (10) declaration -> . CONST ID
+    (11) declaration -> . VAR ID ASSIGN expression
+    (12) declaration -> . LET ID ASSIGN expression
+    (13) declaration -> . CONST ID ASSIGN expression
+    (14) assignment -> . ID ASSIGN expression
+    (26) method_call -> . CONSOLE DOT LOG LPAREN arguments RPAREN
+    (27) method_call -> . ID DOT ID LPAREN arguments RPAREN
+    (18) term -> . factor
+    (19) term -> . term TIMES factor
+    (20) term -> . term DIVIDE factor
+    (21) factor -> . NUMBER
+    (22) factor -> . STRING
+    (23) factor -> . ID
+    (24) factor -> . LPAREN expression RPAREN
+    (25) factor -> . method_call
+
+    $end            reduce using rule 1 (program -> statements .)
+    VAR             shift and go to state 9
+    LET             shift and go to state 11
+    CONST           shift and go to state 12
+    ID              shift and go to state 10
+    CONSOLE         shift and go to state 13
+    NUMBER          shift and go to state 16
+    STRING          shift and go to state 17
+    LPAREN          shift and go to state 14
+
+    statement                      shift and go to state 18
+    expression                     shift and go to state 4
+    declaration                    shift and go to state 5
+    assignment                     shift and go to state 6
+    method_call                    shift and go to state 7
+    term                           shift and go to state 8
+    factor                         shift and go to state 15
+
+state 3
+
+    (2) statements -> statement .
+
+    VAR             reduce using rule 2 (statements -> statement .)
+    LET             reduce using rule 2 (statements -> statement .)
+    CONST           reduce using rule 2 (statements -> statement .)
+    ID              reduce using rule 2 (statements -> statement .)
+    CONSOLE         reduce using rule 2 (statements -> statement .)
+    NUMBER          reduce using rule 2 (statements -> statement .)
+    STRING          reduce using rule 2 (statements -> statement .)
+    LPAREN          reduce using rule 2 (statements -> statement .)
+    $end            reduce using rule 2 (statements -> statement .)
+
+
+state 4
+
+    (4) statement -> expression . SEMICOLON
+    (16) expression -> expression . PLUS term
+    (17) expression -> expression . MINUS term
+
+    SEMICOLON       shift and go to state 19
+    PLUS            shift and go to state 20
+    MINUS           shift and go to state 21
+
+
+state 5
+
+    (5) statement -> declaration . SEMICOLON
+
+    SEMICOLON       shift and go to state 22
+
+
+state 6
+
+    (6) statement -> assignment . SEMICOLON
+
+    SEMICOLON       shift and go to state 23
+
+
+state 7
+
+    (7) statement -> method_call . SEMICOLON
+    (25) factor -> method_call .
+
+  ! shift/reduce conflict for SEMICOLON resolved as shift
+    SEMICOLON       shift and go to state 24
+    TIMES           reduce using rule 25 (factor -> method_call .)
+    DIVIDE          reduce using rule 25 (factor -> method_call .)
+    PLUS            reduce using rule 25 (factor -> method_call .)
+    MINUS           reduce using rule 25 (factor -> method_call .)
+
+  ! SEMICOLON       [ reduce using rule 25 (factor -> method_call .) ]
+
+
+state 8
+
+    (15) expression -> term .
+    (19) term -> term . TIMES factor
+    (20) term -> term . DIVIDE factor
+
+    SEMICOLON       reduce using rule 15 (expression -> term .)
+    PLUS            reduce using rule 15 (expression -> term .)
+    MINUS           reduce using rule 15 (expression -> term .)
+    RPAREN          reduce using rule 15 (expression -> term .)
+    COMMA           reduce using rule 15 (expression -> term .)
+    TIMES           shift and go to state 25
+    DIVIDE          shift and go to state 26
+
+
+state 9
+
+    (8) declaration -> VAR . ID
+    (11) declaration -> VAR . ID ASSIGN expression
+
+    ID              shift and go to state 27
+
+
+state 10
+
+    (14) assignment -> ID . ASSIGN expression
+    (27) method_call -> ID . DOT ID LPAREN arguments RPAREN
+    (23) factor -> ID .
+
+    ASSIGN          shift and go to state 28
+    DOT             shift and go to state 29
+    TIMES           reduce using rule 23 (factor -> ID .)
+    DIVIDE          reduce using rule 23 (factor -> ID .)
+    SEMICOLON       reduce using rule 23 (factor -> ID .)
+    PLUS            reduce using rule 23 (factor -> ID .)
+    MINUS           reduce using rule 23 (factor -> ID .)
+
+
+state 11
+
+    (9) declaration -> LET . ID
+    (12) declaration -> LET . ID ASSIGN expression
+
+    ID              shift and go to state 30
+
+
+state 12
+
+    (10) declaration -> CONST . ID
+    (13) declaration -> CONST . ID ASSIGN expression
+
+    ID              shift and go to state 31
+
+
+state 13
+
+    (26) method_call -> CONSOLE . DOT LOG LPAREN arguments RPAREN
+
+    DOT             shift and go to state 32
+
+
+state 14
+
+    (24) factor -> LPAREN . expression RPAREN
+    (15) expression -> . term
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) term -> . factor
+    (19) term -> . term TIMES factor
+    (20) term -> . term DIVIDE factor
+    (21) factor -> . NUMBER
+    (22) factor -> . STRING
+    (23) factor -> . ID
+    (24) factor -> . LPAREN expression RPAREN
+    (25) factor -> . method_call
+    (26) method_call -> . CONSOLE DOT LOG LPAREN arguments RPAREN
+    (27) method_call -> . ID DOT ID LPAREN arguments RPAREN
+
+    NUMBER          shift and go to state 16
+    STRING          shift and go to state 17
+    ID              shift and go to state 34
+    LPAREN          shift and go to state 14
+    CONSOLE         shift and go to state 13
+
+    expression                     shift and go to state 33
+    term                           shift and go to state 8
+    factor                         shift and go to state 15
+    method_call                    shift and go to state 35
+
+state 15
+
+    (18) term -> factor .
+
+    TIMES           reduce using rule 18 (term -> factor .)
+    DIVIDE          reduce using rule 18 (term -> factor .)
+    SEMICOLON       reduce using rule 18 (term -> factor .)
+    PLUS            reduce using rule 18 (term -> factor .)
+    MINUS           reduce using rule 18 (term -> factor .)
+    RPAREN          reduce using rule 18 (term -> factor .)
+    COMMA           reduce using rule 18 (term -> factor .)
+
+
+state 16
+
+    (21) factor -> NUMBER .
+
+    TIMES           reduce using rule 21 (factor -> NUMBER .)
+    DIVIDE          reduce using rule 21 (factor -> NUMBER .)
+    SEMICOLON       reduce using rule 21 (factor -> NUMBER .)
+    PLUS            reduce using rule 21 (factor -> NUMBER .)
+    MINUS           reduce using rule 21 (factor -> NUMBER .)
+    RPAREN          reduce using rule 21 (factor -> NUMBER .)
+    COMMA           reduce using rule 21 (factor -> NUMBER .)
+
+
+state 17
+
+    (22) factor -> STRING .
+
+    TIMES           reduce using rule 22 (factor -> STRING .)
+    DIVIDE          reduce using rule 22 (factor -> STRING .)
+    SEMICOLON       reduce using rule 22 (factor -> STRING .)
+    PLUS            reduce using rule 22 (factor -> STRING .)
+    MINUS           reduce using rule 22 (factor -> STRING .)
+    RPAREN          reduce using rule 22 (factor -> STRING .)
+    COMMA           reduce using rule 22 (factor -> STRING .)
+
+
+state 18
+
+    (3) statements -> statements statement .
+
+    VAR             reduce using rule 3 (statements -> statements statement .)
+    LET             reduce using rule 3 (statements -> statements statement .)
+    CONST           reduce using rule 3 (statements -> statements statement .)
+    ID              reduce using rule 3 (statements -> statements statement .)
+    CONSOLE         reduce using rule 3 (statements -> statements statement .)
+    NUMBER          reduce using rule 3 (statements -> statements statement .)
+    STRING          reduce using rule 3 (statements -> statements statement .)
+    LPAREN          reduce using rule 3 (statements -> statements statement .)
+    $end            reduce using rule 3 (statements -> statements statement .)
+
+
+state 19
+
+    (4) statement -> expression SEMICOLON .
+
+    VAR             reduce using rule 4 (statement -> expression SEMICOLON .)
+    LET             reduce using rule 4 (statement -> expression SEMICOLON .)
+    CONST           reduce using rule 4 (statement -> expression SEMICOLON .)
+    ID              reduce using rule 4 (statement -> expression SEMICOLON .)
+    CONSOLE         reduce using rule 4 (statement -> expression SEMICOLON .)
+    NUMBER          reduce using rule 4 (statement -> expression SEMICOLON .)
+    STRING          reduce using rule 4 (statement -> expression SEMICOLON .)
+    LPAREN          reduce using rule 4 (statement -> expression SEMICOLON .)
+    $end            reduce using rule 4 (statement -> expression SEMICOLON .)
+
+
+state 20
+
+    (16) expression -> expression PLUS . term
+    (18) term -> . factor
+    (19) term -> . term TIMES factor
+    (20) term -> . term DIVIDE factor
+    (21) factor -> . NUMBER
+    (22) factor -> . STRING
+    (23) factor -> . ID
+    (24) factor -> . LPAREN expression RPAREN
+    (25) factor -> . method_call
+    (26) method_call -> . CONSOLE DOT LOG LPAREN arguments RPAREN
+    (27) method_call -> . ID DOT ID LPAREN arguments RPAREN
+
+    NUMBER          shift and go to state 16
+    STRING          shift and go to state 17
+    ID              shift and go to state 34
+    LPAREN          shift and go to state 14
+    CONSOLE         shift and go to state 13
+
+    term                           shift and go to state 36
+    factor                         shift and go to state 15
+    method_call                    shift and go to state 35
+
+state 21
+
+    (17) expression -> expression MINUS . term
+    (18) term -> . factor
+    (19) term -> . term TIMES factor
+    (20) term -> . term DIVIDE factor
+    (21) factor -> . NUMBER
+    (22) factor -> . STRING
+    (23) factor -> . ID
+    (24) factor -> . LPAREN expression RPAREN
+    (25) factor -> . method_call
+    (26) method_call -> . CONSOLE DOT LOG LPAREN arguments RPAREN
+    (27) method_call -> . ID DOT ID LPAREN arguments RPAREN
+
+    NUMBER          shift and go to state 16
+    STRING          shift and go to state 17
+    ID              shift and go to state 34
+    LPAREN          shift and go to state 14
+    CONSOLE         shift and go to state 13
+
+    term                           shift and go to state 37
+    factor                         shift and go to state 15
+    method_call                    shift and go to state 35
+
+state 22
+
+    (5) statement -> declaration SEMICOLON .
+
+    VAR             reduce using rule 5 (statement -> declaration SEMICOLON .)
+    LET             reduce using rule 5 (statement -> declaration SEMICOLON .)
+    CONST           reduce using rule 5 (statement -> declaration SEMICOLON .)
+    ID              reduce using rule 5 (statement -> declaration SEMICOLON .)
+    CONSOLE         reduce using rule 5 (statement -> declaration SEMICOLON .)
+    NUMBER          reduce using rule 5 (statement -> declaration SEMICOLON .)
+    STRING          reduce using rule 5 (statement -> declaration SEMICOLON .)
+    LPAREN          reduce using rule 5 (statement -> declaration SEMICOLON .)
+    $end            reduce using rule 5 (statement -> declaration SEMICOLON .)
+
+
+state 23
+
+    (6) statement -> assignment SEMICOLON .
+
+    VAR             reduce using rule 6 (statement -> assignment SEMICOLON .)
+    LET             reduce using rule 6 (statement -> assignment SEMICOLON .)
+    CONST           reduce using rule 6 (statement -> assignment SEMICOLON .)
+    ID              reduce using rule 6 (statement -> assignment SEMICOLON .)
+    CONSOLE         reduce using rule 6 (statement -> assignment SEMICOLON .)
+    NUMBER          reduce using rule 6 (statement -> assignment SEMICOLON .)
+    STRING          reduce using rule 6 (statement -> assignment SEMICOLON .)
+    LPAREN          reduce using rule 6 (statement -> assignment SEMICOLON .)
+    $end            reduce using rule 6 (statement -> assignment SEMICOLON .)
+
+
+state 24
+
+    (7) statement -> method_call SEMICOLON .
+
+    VAR             reduce using rule 7 (statement -> method_call SEMICOLON .)
+    LET             reduce using rule 7 (statement -> method_call SEMICOLON .)
+    CONST           reduce using rule 7 (statement -> method_call SEMICOLON .)
+    ID              reduce using rule 7 (statement -> method_call SEMICOLON .)
+    CONSOLE         reduce using rule 7 (statement -> method_call SEMICOLON .)
+    NUMBER          reduce using rule 7 (statement -> method_call SEMICOLON .)
+    STRING          reduce using rule 7 (statement -> method_call SEMICOLON .)
+    LPAREN          reduce using rule 7 (statement -> method_call SEMICOLON .)
+    $end            reduce using rule 7 (statement -> method_call SEMICOLON .)
+
+
+state 25
+
+    (19) term -> term TIMES . factor
+    (21) factor -> . NUMBER
+    (22) factor -> . STRING
+    (23) factor -> . ID
+    (24) factor -> . LPAREN expression RPAREN
+    (25) factor -> . method_call
+    (26) method_call -> . CONSOLE DOT LOG LPAREN arguments RPAREN
+    (27) method_call -> . ID DOT ID LPAREN arguments RPAREN
+
+    NUMBER          shift and go to state 16
+    STRING          shift and go to state 17
+    ID              shift and go to state 34
+    LPAREN          shift and go to state 14
+    CONSOLE         shift and go to state 13
+
+    factor                         shift and go to state 38
+    method_call                    shift and go to state 35
+
+state 26
+
+    (20) term -> term DIVIDE . factor
+    (21) factor -> . NUMBER
+    (22) factor -> . STRING
+    (23) factor -> . ID
+    (24) factor -> . LPAREN expression RPAREN
+    (25) factor -> . method_call
+    (26) method_call -> . CONSOLE DOT LOG LPAREN arguments RPAREN
+    (27) method_call -> . ID DOT ID LPAREN arguments RPAREN
+
+    NUMBER          shift and go to state 16
+    STRING          shift and go to state 17
+    ID              shift and go to state 34
+    LPAREN          shift and go to state 14
+    CONSOLE         shift and go to state 13
+
+    factor                         shift and go to state 39
+    method_call                    shift and go to state 35
+
+state 27
+
+    (8) declaration -> VAR ID .
+    (11) declaration -> VAR ID . ASSIGN expression
+
+    SEMICOLON       reduce using rule 8 (declaration -> VAR ID .)
+    ASSIGN          shift and go to state 40
+
+
+state 28
+
+    (14) assignment -> ID ASSIGN . expression
+    (15) expression -> . term
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) term -> . factor
+    (19) term -> . term TIMES factor
+    (20) term -> . term DIVIDE factor
+    (21) factor -> . NUMBER
+    (22) factor -> . STRING
+    (23) factor -> . ID
+    (24) factor -> . LPAREN expression RPAREN
+    (25) factor -> . method_call
+    (26) method_call -> . CONSOLE DOT LOG LPAREN arguments RPAREN
+    (27) method_call -> . ID DOT ID LPAREN arguments RPAREN
+
+    NUMBER          shift and go to state 16
+    STRING          shift and go to state 17
+    ID              shift and go to state 34
+    LPAREN          shift and go to state 14
+    CONSOLE         shift and go to state 13
+
+    expression                     shift and go to state 41
+    term                           shift and go to state 8
+    factor                         shift and go to state 15
+    method_call                    shift and go to state 35
+
+state 29
+
+    (27) method_call -> ID DOT . ID LPAREN arguments RPAREN
+
+    ID              shift and go to state 42
+
+
+state 30
+
+    (9) declaration -> LET ID .
+    (12) declaration -> LET ID . ASSIGN expression
+
+    SEMICOLON       reduce using rule 9 (declaration -> LET ID .)
+    ASSIGN          shift and go to state 43
+
+
+state 31
+
+    (10) declaration -> CONST ID .
+    (13) declaration -> CONST ID . ASSIGN expression
+
+    SEMICOLON       reduce using rule 10 (declaration -> CONST ID .)
+    ASSIGN          shift and go to state 44
+
+
+state 32
+
+    (26) method_call -> CONSOLE DOT . LOG LPAREN arguments RPAREN
+
+    LOG             shift and go to state 45
+
+
+state 33
+
+    (24) factor -> LPAREN expression . RPAREN
+    (16) expression -> expression . PLUS term
+    (17) expression -> expression . MINUS term
+
+    RPAREN          shift and go to state 46
+    PLUS            shift and go to state 20
+    MINUS           shift and go to state 21
+
+
+state 34
+
+    (23) factor -> ID .
+    (27) method_call -> ID . DOT ID LPAREN arguments RPAREN
+
+    TIMES           reduce using rule 23 (factor -> ID .)
+    DIVIDE          reduce using rule 23 (factor -> ID .)
+    RPAREN          reduce using rule 23 (factor -> ID .)
+    PLUS            reduce using rule 23 (factor -> ID .)
+    MINUS           reduce using rule 23 (factor -> ID .)
+    SEMICOLON       reduce using rule 23 (factor -> ID .)
+    COMMA           reduce using rule 23 (factor -> ID .)
+    DOT             shift and go to state 29
+
+
+state 35
+
+    (25) factor -> method_call .
+
+    TIMES           reduce using rule 25 (factor -> method_call .)
+    DIVIDE          reduce using rule 25 (factor -> method_call .)
+    RPAREN          reduce using rule 25 (factor -> method_call .)
+    PLUS            reduce using rule 25 (factor -> method_call .)
+    MINUS           reduce using rule 25 (factor -> method_call .)
+    SEMICOLON       reduce using rule 25 (factor -> method_call .)
+    COMMA           reduce using rule 25 (factor -> method_call .)
+
+
+state 36
+
+    (16) expression -> expression PLUS term .
+    (19) term -> term . TIMES factor
+    (20) term -> term . DIVIDE factor
+
+    SEMICOLON       reduce using rule 16 (expression -> expression PLUS term .)
+    PLUS            reduce using rule 16 (expression -> expression PLUS term .)
+    MINUS           reduce using rule 16 (expression -> expression PLUS term .)
+    RPAREN          reduce using rule 16 (expression -> expression PLUS term .)
+    COMMA           reduce using rule 16 (expression -> expression PLUS term .)
+    TIMES           shift and go to state 25
+    DIVIDE          shift and go to state 26
+
+
+state 37
+
+    (17) expression -> expression MINUS term .
+    (19) term -> term . TIMES factor
+    (20) term -> term . DIVIDE factor
+
+    SEMICOLON       reduce using rule 17 (expression -> expression MINUS term .)
+    PLUS            reduce using rule 17 (expression -> expression MINUS term .)
+    MINUS           reduce using rule 17 (expression -> expression MINUS term .)
+    RPAREN          reduce using rule 17 (expression -> expression MINUS term .)
+    COMMA           reduce using rule 17 (expression -> expression MINUS term .)
+    TIMES           shift and go to state 25
+    DIVIDE          shift and go to state 26
+
+
+state 38
+
+    (19) term -> term TIMES factor .
+
+    TIMES           reduce using rule 19 (term -> term TIMES factor .)
+    DIVIDE          reduce using rule 19 (term -> term TIMES factor .)
+    SEMICOLON       reduce using rule 19 (term -> term TIMES factor .)
+    PLUS            reduce using rule 19 (term -> term TIMES factor .)
+    MINUS           reduce using rule 19 (term -> term TIMES factor .)
+    RPAREN          reduce using rule 19 (term -> term TIMES factor .)
+    COMMA           reduce using rule 19 (term -> term TIMES factor .)
+
+
+state 39
+
+    (20) term -> term DIVIDE factor .
+
+    TIMES           reduce using rule 20 (term -> term DIVIDE factor .)
+    DIVIDE          reduce using rule 20 (term -> term DIVIDE factor .)
+    SEMICOLON       reduce using rule 20 (term -> term DIVIDE factor .)
+    PLUS            reduce using rule 20 (term -> term DIVIDE factor .)
+    MINUS           reduce using rule 20 (term -> term DIVIDE factor .)
+    RPAREN          reduce using rule 20 (term -> term DIVIDE factor .)
+    COMMA           reduce using rule 20 (term -> term DIVIDE factor .)
+
+
+state 40
+
+    (11) declaration -> VAR ID ASSIGN . expression
+    (15) expression -> . term
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) term -> . factor
+    (19) term -> . term TIMES factor
+    (20) term -> . term DIVIDE factor
+    (21) factor -> . NUMBER
+    (22) factor -> . STRING
+    (23) factor -> . ID
+    (24) factor -> . LPAREN expression RPAREN
+    (25) factor -> . method_call
+    (26) method_call -> . CONSOLE DOT LOG LPAREN arguments RPAREN
+    (27) method_call -> . ID DOT ID LPAREN arguments RPAREN
+
+    NUMBER          shift and go to state 16
+    STRING          shift and go to state 17
+    ID              shift and go to state 34
+    LPAREN          shift and go to state 14
+    CONSOLE         shift and go to state 13
+
+    expression                     shift and go to state 47
+    term                           shift and go to state 8
+    factor                         shift and go to state 15
+    method_call                    shift and go to state 35
+
+state 41
+
+    (14) assignment -> ID ASSIGN expression .
+    (16) expression -> expression . PLUS term
+    (17) expression -> expression . MINUS term
+
+    SEMICOLON       reduce using rule 14 (assignment -> ID ASSIGN expression .)
+    PLUS            shift and go to state 20
+    MINUS           shift and go to state 21
+
+
+state 42
+
+    (27) method_call -> ID DOT ID . LPAREN arguments RPAREN
+
+    LPAREN          shift and go to state 48
+
+
+state 43
+
+    (12) declaration -> LET ID ASSIGN . expression
+    (15) expression -> . term
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) term -> . factor
+    (19) term -> . term TIMES factor
+    (20) term -> . term DIVIDE factor
+    (21) factor -> . NUMBER
+    (22) factor -> . STRING
+    (23) factor -> . ID
+    (24) factor -> . LPAREN expression RPAREN
+    (25) factor -> . method_call
+    (26) method_call -> . CONSOLE DOT LOG LPAREN arguments RPAREN
+    (27) method_call -> . ID DOT ID LPAREN arguments RPAREN
+
+    NUMBER          shift and go to state 16
+    STRING          shift and go to state 17
+    ID              shift and go to state 34
+    LPAREN          shift and go to state 14
+    CONSOLE         shift and go to state 13
+
+    expression                     shift and go to state 49
+    term                           shift and go to state 8
+    factor                         shift and go to state 15
+    method_call                    shift and go to state 35
+
+state 44
+
+    (13) declaration -> CONST ID ASSIGN . expression
+    (15) expression -> . term
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) term -> . factor
+    (19) term -> . term TIMES factor
+    (20) term -> . term DIVIDE factor
+    (21) factor -> . NUMBER
+    (22) factor -> . STRING
+    (23) factor -> . ID
+    (24) factor -> . LPAREN expression RPAREN
+    (25) factor -> . method_call
+    (26) method_call -> . CONSOLE DOT LOG LPAREN arguments RPAREN
+    (27) method_call -> . ID DOT ID LPAREN arguments RPAREN
+
+    NUMBER          shift and go to state 16
+    STRING          shift and go to state 17
+    ID              shift and go to state 34
+    LPAREN          shift and go to state 14
+    CONSOLE         shift and go to state 13
+
+    expression                     shift and go to state 50
+    term                           shift and go to state 8
+    factor                         shift and go to state 15
+    method_call                    shift and go to state 35
+
+state 45
+
+    (26) method_call -> CONSOLE DOT LOG . LPAREN arguments RPAREN
+
+    LPAREN          shift and go to state 51
+
+
+state 46
+
+    (24) factor -> LPAREN expression RPAREN .
+
+    TIMES           reduce using rule 24 (factor -> LPAREN expression RPAREN .)
+    DIVIDE          reduce using rule 24 (factor -> LPAREN expression RPAREN .)
+    SEMICOLON       reduce using rule 24 (factor -> LPAREN expression RPAREN .)
+    PLUS            reduce using rule 24 (factor -> LPAREN expression RPAREN .)
+    MINUS           reduce using rule 24 (factor -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 24 (factor -> LPAREN expression RPAREN .)
+    COMMA           reduce using rule 24 (factor -> LPAREN expression RPAREN .)
+
+
+state 47
+
+    (11) declaration -> VAR ID ASSIGN expression .
+    (16) expression -> expression . PLUS term
+    (17) expression -> expression . MINUS term
+
+    SEMICOLON       reduce using rule 11 (declaration -> VAR ID ASSIGN expression .)
+    PLUS            shift and go to state 20
+    MINUS           shift and go to state 21
+
+
+state 48
+
+    (27) method_call -> ID DOT ID LPAREN . arguments RPAREN
+    (28) arguments -> .
+    (29) arguments -> . expression
+    (30) arguments -> . arguments COMMA expression
+    (15) expression -> . term
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) term -> . factor
+    (19) term -> . term TIMES factor
+    (20) term -> . term DIVIDE factor
+    (21) factor -> . NUMBER
+    (22) factor -> . STRING
+    (23) factor -> . ID
+    (24) factor -> . LPAREN expression RPAREN
+    (25) factor -> . method_call
+    (26) method_call -> . CONSOLE DOT LOG LPAREN arguments RPAREN
+    (27) method_call -> . ID DOT ID LPAREN arguments RPAREN
+
+    RPAREN          reduce using rule 28 (arguments -> .)
+    COMMA           reduce using rule 28 (arguments -> .)
+    NUMBER          shift and go to state 16
+    STRING          shift and go to state 17
+    ID              shift and go to state 34
+    LPAREN          shift and go to state 14
+    CONSOLE         shift and go to state 13
+
+    arguments                      shift and go to state 52
+    expression                     shift and go to state 53
+    term                           shift and go to state 8
+    factor                         shift and go to state 15
+    method_call                    shift and go to state 35
+
+state 49
+
+    (12) declaration -> LET ID ASSIGN expression .
+    (16) expression -> expression . PLUS term
+    (17) expression -> expression . MINUS term
+
+    SEMICOLON       reduce using rule 12 (declaration -> LET ID ASSIGN expression .)
+    PLUS            shift and go to state 20
+    MINUS           shift and go to state 21
+
+
+state 50
+
+    (13) declaration -> CONST ID ASSIGN expression .
+    (16) expression -> expression . PLUS term
+    (17) expression -> expression . MINUS term
+
+    SEMICOLON       reduce using rule 13 (declaration -> CONST ID ASSIGN expression .)
+    PLUS            shift and go to state 20
+    MINUS           shift and go to state 21
+
+
+state 51
+
+    (26) method_call -> CONSOLE DOT LOG LPAREN . arguments RPAREN
+    (28) arguments -> .
+    (29) arguments -> . expression
+    (30) arguments -> . arguments COMMA expression
+    (15) expression -> . term
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) term -> . factor
+    (19) term -> . term TIMES factor
+    (20) term -> . term DIVIDE factor
+    (21) factor -> . NUMBER
+    (22) factor -> . STRING
+    (23) factor -> . ID
+    (24) factor -> . LPAREN expression RPAREN
+    (25) factor -> . method_call
+    (26) method_call -> . CONSOLE DOT LOG LPAREN arguments RPAREN
+    (27) method_call -> . ID DOT ID LPAREN arguments RPAREN
+
+    RPAREN          reduce using rule 28 (arguments -> .)
+    COMMA           reduce using rule 28 (arguments -> .)
+    NUMBER          shift and go to state 16
+    STRING          shift and go to state 17
+    ID              shift and go to state 34
+    LPAREN          shift and go to state 14
+    CONSOLE         shift and go to state 13
+
+    arguments                      shift and go to state 54
+    expression                     shift and go to state 53
+    term                           shift and go to state 8
+    factor                         shift and go to state 15
+    method_call                    shift and go to state 35
+
+state 52
+
+    (27) method_call -> ID DOT ID LPAREN arguments . RPAREN
+    (30) arguments -> arguments . COMMA expression
+
+    RPAREN          shift and go to state 55
+    COMMA           shift and go to state 56
+
+
+state 53
+
+    (29) arguments -> expression .
+    (16) expression -> expression . PLUS term
+    (17) expression -> expression . MINUS term
+
+    RPAREN          reduce using rule 29 (arguments -> expression .)
+    COMMA           reduce using rule 29 (arguments -> expression .)
+    PLUS            shift and go to state 20
+    MINUS           shift and go to state 21
+
+
+state 54
+
+    (26) method_call -> CONSOLE DOT LOG LPAREN arguments . RPAREN
+    (30) arguments -> arguments . COMMA expression
+
+    RPAREN          shift and go to state 57
+    COMMA           shift and go to state 56
+
+
+state 55
+
+    (27) method_call -> ID DOT ID LPAREN arguments RPAREN .
+
+    SEMICOLON       reduce using rule 27 (method_call -> ID DOT ID LPAREN arguments RPAREN .)
+    TIMES           reduce using rule 27 (method_call -> ID DOT ID LPAREN arguments RPAREN .)
+    DIVIDE          reduce using rule 27 (method_call -> ID DOT ID LPAREN arguments RPAREN .)
+    PLUS            reduce using rule 27 (method_call -> ID DOT ID LPAREN arguments RPAREN .)
+    MINUS           reduce using rule 27 (method_call -> ID DOT ID LPAREN arguments RPAREN .)
+    RPAREN          reduce using rule 27 (method_call -> ID DOT ID LPAREN arguments RPAREN .)
+    COMMA           reduce using rule 27 (method_call -> ID DOT ID LPAREN arguments RPAREN .)
+
+
+state 56
+
+    (30) arguments -> arguments COMMA . expression
+    (15) expression -> . term
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) term -> . factor
+    (19) term -> . term TIMES factor
+    (20) term -> . term DIVIDE factor
+    (21) factor -> . NUMBER
+    (22) factor -> . STRING
+    (23) factor -> . ID
+    (24) factor -> . LPAREN expression RPAREN
+    (25) factor -> . method_call
+    (26) method_call -> . CONSOLE DOT LOG LPAREN arguments RPAREN
+    (27) method_call -> . ID DOT ID LPAREN arguments RPAREN
+
+    NUMBER          shift and go to state 16
+    STRING          shift and go to state 17
+    ID              shift and go to state 34
+    LPAREN          shift and go to state 14
+    CONSOLE         shift and go to state 13
+
+    expression                     shift and go to state 58
+    term                           shift and go to state 8
+    factor                         shift and go to state 15
+    method_call                    shift and go to state 35
+
+state 57
+
+    (26) method_call -> CONSOLE DOT LOG LPAREN arguments RPAREN .
+
+    SEMICOLON       reduce using rule 26 (method_call -> CONSOLE DOT LOG LPAREN arguments RPAREN .)
+    TIMES           reduce using rule 26 (method_call -> CONSOLE DOT LOG LPAREN arguments RPAREN .)
+    DIVIDE          reduce using rule 26 (method_call -> CONSOLE DOT LOG LPAREN arguments RPAREN .)
+    PLUS            reduce using rule 26 (method_call -> CONSOLE DOT LOG LPAREN arguments RPAREN .)
+    MINUS           reduce using rule 26 (method_call -> CONSOLE DOT LOG LPAREN arguments RPAREN .)
+    RPAREN          reduce using rule 26 (method_call -> CONSOLE DOT LOG LPAREN arguments RPAREN .)
+    COMMA           reduce using rule 26 (method_call -> CONSOLE DOT LOG LPAREN arguments RPAREN .)
+
+
+state 58
+
+    (30) arguments -> arguments COMMA expression .
+    (16) expression -> expression . PLUS term
+    (17) expression -> expression . MINUS term
+
+    RPAREN          reduce using rule 30 (arguments -> arguments COMMA expression .)
+    COMMA           reduce using rule 30 (arguments -> arguments COMMA expression .)
+    PLUS            shift and go to state 20
+    MINUS           shift and go to state 21
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for SEMICOLON in state 7 resolved as shift
