@@ -6,13 +6,78 @@ import sys
 import os
 import tempfile
 from lexer import tokenize
-from parser import parser
+from parser import parse
+from ttkthemes import ThemedTk
+from pygments import lex
+from pygments.lexers import JavascriptLexer
+from pygments.styles import get_style_by_name
+import re
+
+class LineNumberCanvas(tk.Canvas):
+    def __init__(self, parent, text_widget, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
+        self.text_widget = text_widget
+        self.config(width=40)
+        
+        # Configuración de colores para los números de línea
+        self.bg_color = "#1e1e1e"
+        self.fg_color = "#6e7681"
+        self.config(bg=self.bg_color, highlightthickness=0)
+        
+        self.text_widget.bind('<<Modified>>', self._on_change)
+        self.text_widget.bind('<Configure>', self._on_change)
+        self.text_widget.bind('<KeyRelease>', self._on_change)
+        self.text_widget.bind('<MouseWheel>', self._on_change)
+        
+    def _on_change(self, event=None):
+        self.redraw()
+        
+    def redraw(self):
+        self.delete('all')
+        
+        # Obtener información sobre las líneas visibles
+        first_line = self.text_widget.index("@0,0")
+        last_line = self.text_widget.index("@0,%d" % self.text_widget.winfo_height())
+        first_line_num = int(float(first_line))
+        last_line_num = int(float(last_line))
+        
+        # Dibujar números de línea
+        for line_num in range(first_line_num, last_line_num + 1):
+            y_coord = self.text_widget.dlineinfo("%d.0" % line_num)
+            if y_coord:
+                self.create_text(
+                    35,
+                    y_coord[1] + y_coord[3]/2,
+                    text=str(line_num),
+                    anchor='e',
+                    fill=self.fg_color,
+                    font=self.text_widget['font']
+                )
 
 class CompiladorGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("Compilador JavaScript")
         self.root.geometry("1400x800")
+        
+        # Configurar tema oscuro
+        self.root.configure(bg="#1e1e1e")
+        style = ttk.Style()
+        style.configure(".", background="#1e1e1e", foreground="#d4d4d4")
+        style.configure("TLabelframe", background="#1e1e1e", foreground="#d4d4d4")
+        style.configure("TLabelframe.Label", background="#1e1e1e", foreground="#d4d4d4")
+        
+        # Configurar estilo de botones
+        style.configure("Blue.TButton",
+            background="#0078d4",
+            foreground="white",
+            padding=(10, 5),
+            relief="flat"
+        )
+        style.map("Blue.TButton",
+            background=[("active", "#1e90ff"), ("pressed", "#005fb8")],
+            relief=[("pressed", "sunken")]
+        )
         
         # Crear fuente monoespaciada
         self.code_font = Font(family="Consolas", size=11)
@@ -31,16 +96,27 @@ class CompiladorGUI:
         
         # Configurar colores
         self.colors = {
-            'NORMAL': '#000000',    # Negro para tokens y AST
+            'NORMAL': '#FFFFFF',    # Blanco para tokens y AST
             'ERROR': '#FF0000',     # Rojo para errores
             'SUCCESS': '#FFFFFF',   # Blanco para mensajes de éxito en consola
             'OUTPUT': '#FFFFFF',    # Blanco para salida en consola
             'INFO': '#FFFFFF',      # Blanco para información en consola
-            'COMMENT': '#000000',   # Negro
-            'KEYWORD': '#000000',   # Negro
-            'STRING': '#000000',    # Negro
-            'NUMBER': '#000000',    # Negro
-            'OPERATOR': '#000000'   # Negro
+            'COMMENT': '#FFFFFF',   # Blanco
+            'KEYWORD': '#FFFFFF',   # Blanco
+            'STRING': '#FFFFFF',    # Blanco
+            'NUMBER': '#FFFFFF',    # Blanco
+            'OPERATOR': '#FFFFFF'   # Blanco
+        }
+        
+        # Configurar colores de sintaxis
+        self.syntax_colors = {
+            'Token.Keyword': '#569cd6',
+            'Token.String': '#ce9178',
+            'Token.Number': '#b5cea8',
+            'Token.Comment': '#6a9955',
+            'Token.Operator': '#d4d4d4',
+            'Token.Name.Function': '#dcdcaa',
+            'Token.Name': '#9cdcfe'
         }
         
         # Crear el layout principal
@@ -58,44 +134,77 @@ class CompiladorGUI:
         # Editor de código
         editor_frame = ttk.LabelFrame(left_panel, text="Editor JavaScript")
         left_panel.add(editor_frame)
+        
+        # Frame para el editor y números de línea
+        editor_with_lines = ttk.Frame(editor_frame)
+        editor_with_lines.pack(fill=tk.BOTH, expand=True)
 
         self.code_editor = scrolledtext.ScrolledText(
-            editor_frame,
+            editor_with_lines,
             wrap=tk.NONE,
             font=self.code_font,
-            background="#1e1e1e",
-            foreground="#d4d4d4",
-            insertbackground="#d4d4d4",
+            background="black",
+            foreground="white",
+            insertbackground="white",
             selectbackground="#264F78",
-            selectforeground="#d4d4d4",
+            selectforeground="white",
             height=20,
-            padx=5,
+            padx=10,
             pady=5
         )
-        self.code_editor.pack(fill=tk.BOTH, expand=True)
+        
+        # Crear y configurar el widget de números de línea
+        self.line_numbers = LineNumberCanvas(editor_with_lines, self.code_editor)
+        self.line_numbers.pack(side=tk.LEFT, fill=tk.Y)
+        self.code_editor.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        # Configurar el resaltado de sintaxis
+        self.code_editor.bind('<KeyRelease>', self._highlight_syntax)
+        
+        # Configurar la sangría automática
+        self.code_editor.bind('<Return>', self._auto_indent)
+        self.code_editor.bind('<Tab>', self._handle_tab)
 
         # Botones
         button_frame = ttk.Frame(editor_frame)
         button_frame.pack(fill=tk.X, pady=5)
 
-        self.compile_button = ttk.Button(
+        self.compile_button = tk.Button(
             button_frame,
             text="Compilar",
-            command=self.compile_code
+            command=self.compile_code,
+            bg="#0078d4",
+            fg="white",
+            relief="flat",
+            padx=10,
+            pady=5,
+            cursor="hand2"
         )
         self.compile_button.pack(side=tk.LEFT, padx=5)
 
-        self.run_button = ttk.Button(
+        self.run_button = tk.Button(
             button_frame,
             text="Ejecutar (F5)",
-            command=self.run_code
+            command=self.run_code,
+            bg="#0078d4",
+            fg="white",
+            relief="flat",
+            padx=10,
+            pady=5,
+            cursor="hand2"
         )
         self.run_button.pack(side=tk.LEFT, padx=5)
 
-        self.clear_button = ttk.Button(
+        self.clear_button = tk.Button(
             button_frame,
             text="Limpiar Consola",
-            command=self.clear_console
+            command=self.clear_console,
+            bg="#0078d4",
+            fg="white",
+            relief="flat",
+            padx=10,
+            pady=5,
+            cursor="hand2"
         )
         self.clear_button.pack(side=tk.LEFT, padx=5)
 
@@ -107,9 +216,9 @@ class CompiladorGUI:
             console_frame,
             wrap=tk.WORD,
             font=self.code_font,
-            background="#1e1e1e",
-            foreground="#FFFFFF",
-            insertbackground="#FFFFFF",
+            background="black",
+            foreground="white",
+            insertbackground="white",
             height=10,
             padx=5,
             pady=5
@@ -143,8 +252,8 @@ class CompiladorGUI:
             tokens_frame,
             wrap=tk.NONE,
             font=self.code_font,
-            background="white",
-            foreground="black",
+            background="black",
+            foreground="white",
             height=8
         )
         self.tokens_list.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
@@ -157,8 +266,8 @@ class CompiladorGUI:
             ast_frame,
             wrap=tk.NONE,
             font=self.code_font,
-            background="white",
-            foreground="black",
+            background="black",
+            foreground="white",
             height=8
         )
         self.ast_view.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
@@ -171,8 +280,8 @@ class CompiladorGUI:
             errors_frame,
             wrap=tk.NONE,
             font=self.code_font,
-            background="white",
-            foreground="black",
+            background="black",
+            foreground="white",
             height=6
         )
         self.error_list.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
@@ -277,9 +386,13 @@ class CompiladorGUI:
             self.write_to_console(error_msg, 'ERROR')
             return
 
-        # Análisis sintáctico
+        # Análisis sintáctico y semántico
         try:
-            self.ast = parser.parse(code)
+            self.ast = parse(code)
+            if isinstance(self.ast, str):
+                self.write_to_errors(self.ast)
+                self.write_to_console(self.ast, 'ERROR')
+                return
             if self.ast:
                 self.write_to_ast("Árbol de Sintaxis Abstracta (AST):\n", 'INFO')
                 self.write_to_ast(str(self.ast), 'NORMAL')
@@ -340,6 +453,54 @@ class CompiladorGUI:
                 os.unlink(temp_file_path)
             except:
                 pass
+
+    def _highlight_syntax(self, event=None):
+        # Obtener todo el texto
+        content = self.code_editor.get("1.0", tk.END)
+        
+        # Eliminar tags existentes
+        for tag in self.code_editor.tag_names():
+            if tag != "sel":  # Mantener la selección
+                self.code_editor.tag_remove(tag, "1.0", tk.END)
+        
+        # Aplicar resaltado de sintaxis usando Pygments
+        try:
+            for token, text in lex(content, JavascriptLexer()):
+                if str(token) in self.syntax_colors:
+                    # Encontrar la posición del token
+                    start = content.find(text)
+                    if start != -1:
+                        end = start + len(text)
+                        start_pos = f"1.0+{start}c"
+                        end_pos = f"1.0+{end}c"
+                        
+                        # Crear un tag único para este tipo de token
+                        tag_name = str(token).replace(".", "_")
+                        self.code_editor.tag_config(tag_name, foreground=self.syntax_colors[str(token)])
+                        self.code_editor.tag_add(tag_name, start_pos, end_pos)
+        except Exception as e:
+            print(f"Error en el resaltado de sintaxis: {e}")
+
+    def _auto_indent(self, event):
+        # Obtener la línea actual
+        current_line = self.code_editor.get("insert linestart", "insert")
+        
+        # Obtener la indentación actual
+        match = re.match(r'^(\s*)', current_line)
+        indent = match.group(1) if match else ""
+        
+        # Agregar indentación extra si la línea termina con {
+        if current_line.rstrip().endswith("{"):
+            indent += "    "
+            
+        # Insertar nueva línea con indentación
+        self.code_editor.insert("insert", f"\n{indent}")
+        return "break"  # Prevenir el comportamiento por defecto
+
+    def _handle_tab(self, event):
+        # Insertar 4 espacios en lugar de un tab
+        self.code_editor.insert("insert", "    ")
+        return "break"  # Prevenir el comportamiento por defecto
 
 def main():
     root = tk.Tk()

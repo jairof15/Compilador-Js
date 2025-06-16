@@ -14,19 +14,25 @@ tokens = [
     'RPAREN',
     'LBRACE',
     'RBRACE',
-    'LBRACKET',
-    'RBRACKET',
+    'LBRACKET',  # Para arrays [
+    'RBRACKET',  # Para arrays ]
     'SEMICOLON',
     'COMMA',
+    'COLON',  # Para objetos :
+    'QUESTION', # Para operador ternario ?
+    'ARROW',    # Para funciones flecha =>
     'EQUALS',
     'NOTEQUALS',
     'GT',  # Mayor que
     'LT',  # Menor que
+    'GE',  # Mayor o igual que
+    'LE',  # Menor o igual que
     'DOT',  # Punto para acceso a métodos
-    'ARROW',
-    'COMMENT',
-    'TERNARY',
-    'COLON'
+    'AND',  # Operador &&
+    'OR',   # Operador ||
+    'NOT',   # Operador !
+    'TRUE',
+    'FALSE'
 ]
 
 # Palabras reservadas
@@ -39,12 +45,18 @@ reserved = {
     'var': 'VAR',
     'let': 'LET',
     'const': 'CONST',
-    'console': 'CONSOLE',  # Agregar console como palabra reservada
+    'console': 'CONSOLE',
     'log': 'LOG',
-    'async': 'ASYNC',
-    'await': 'AWAIT',
-    'new': 'NEW',
-    'Promise': 'PROMISE'
+    'break': 'BREAK',
+    'for': 'FOR',
+    'switch': 'SWITCH',
+    'case': 'CASE',
+    'default': 'DEFAULT',
+    'try': 'TRY',
+    'catch': 'CATCH',
+    'throw': 'THROW',
+    'true': 'TRUE',
+    'false': 'FALSE'
 }
 
 tokens = tokens + list(reserved.values())
@@ -63,14 +75,19 @@ t_LBRACKET = r'\['
 t_RBRACKET = r'\]'
 t_SEMICOLON = r';'
 t_COMMA = r','
+t_COLON = r':'
 t_EQUALS = r'=='
 t_NOTEQUALS = r'!='
+t_GE = r'>='
+t_LE = r'<='
 t_GT = r'>'
 t_LT = r'<'
-t_DOT = r'\.'  # Agregar regla para el punto
+t_DOT = r'\.'
+t_AND = r'&&'
+t_OR = r'\|\|'
+t_NOT = r'!'
+t_QUESTION = r'\?'
 t_ARROW = r'=>'
-t_TERNARY = r'\?'
-t_COLON = r':'
 
 # Ignorar espacios y tabulaciones
 t_ignore = ' \t'
@@ -86,7 +103,7 @@ def t_NUMBER(t):
     return t
 
 def t_ID(t):
-    r'[a-zA-Z_][a-zA-Z0-9_]*'
+    r'[a-zA-Z_\u00C0-\u00FF][a-zA-Z0-9_\u00C0-\u00FF]*'
     t.type = reserved.get(t.value, 'ID')
     return t
 
@@ -99,8 +116,7 @@ def t_newline(t):
 # Manejo de comentarios
 def t_COMMENT(t):
     r'//.*'
-    t.value = t.value[2:].strip()  # Remover // y espacios en blanco
-    return t
+    pass  # Ignorar comentarios, no devolver token
 
 def t_error(t):
     error_msg = f"Carácter ilegal '{t.value[0]}' en la línea {t.lineno}, columna {t.lexpos - t.lexer.linestart}"

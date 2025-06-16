@@ -1,21 +1,44 @@
 # Compilador de JavaScript en Python
 
-Este es un compilador simple de JavaScript implementado en Python que realiza análisis léxico, sintáctico y semántico del código fuente.
+Este es un compilador simple de JavaScript implementado en Python que realiza análisis léxico, sintáctico y semántico del código fuente, con una interfaz gráfica moderna y soporte para la mayoría de las construcciones básicas del lenguaje.
 
 ## Características
 
-- Análisis léxico para identificar tokens
-- Análisis sintáctico para construir el árbol de sintaxis abstracta (AST)
-- Análisis semántico para verificar errores de declaración y uso de variables
-- Interfaz gráfica moderna con:
-  - Editor de código con resaltado
-  - Pestañas para ver resultados de análisis
-  - Visualización en tiempo real de errores
-- Soporte para estructuras básicas de JavaScript:
-  - Variables (var, let, const)
-  - Funciones
-  - Estructuras de control (if, while)
-  - Operaciones aritméticas básicas
+- **Análisis léxico:**
+  - Identificación y clasificación de tokens: palabras clave, identificadores, operadores, literales numéricos, de texto y booleanos, símbolos de puntuación, etc.
+  - Muestra los tokens con su tipo, valor, línea y columna.
+
+- **Análisis sintáctico:**
+  - Construcción del Árbol de Sintaxis Abstracta (AST) para:
+    - Declaraciones de variables (`let`, `var`, `const`)
+    - Asignaciones
+    - Expresiones aritméticas, lógicas y booleanas
+    - Estructuras de control: `if`, `else`, `while`, `for`, `switch`, `case`, `default`
+    - Funciones y llamadas a funciones (incluyendo funciones flecha y anónimas)
+    - Arrays y objetos literales
+    - Acceso a propiedades y métodos (`console.log`, `push`, `pop`, etc.)
+    - Operador ternario
+    - Sentencias `break`, `return`, `try/catch`, `throw`
+
+- **Análisis semántico:**
+  - **Variables:**
+    - Detecta uso de variables no declaradas.
+    - Detecta redeclaración de variables en el mismo scope.
+    - Detecta asignación a variables no declaradas.
+    - Maneja correctamente el scope de variables en bloques, funciones, ciclos, etc.
+  - **Funciones:**
+    - Detecta uso de parámetros no declarados dentro de funciones.
+    - Maneja el scope de parámetros y variables locales.
+  - **Bloques y control de flujo:**
+    - Detecta uso de variables fuera de su scope (por ejemplo, variables declaradas dentro de un `if` o `while` y usadas fuera).
+  - **Literales:**
+    - Reconoce correctamente literales `true`, `false`, strings y números, sin tratarlos como variables.
+  - **Errores sintácticos personalizados:**
+    - Señala errores como `case:` sin expresión, `if` sin condición, declaración de variable sin identificador, etc., con mensajes claros y precisos.
+
+- **Visualización:**
+  - Muestra tokens, AST, errores léxicos, sintácticos y semánticos en la interfaz gráfica.
+  - Colores y fondos configurables para mejor legibilidad.
 
 ## Requisitos
 
@@ -44,12 +67,13 @@ python gui.py
 ```
 
 La interfaz gráfica incluye:
-- Editor de código con fuente monoespaciada
-- Botón de compilación
-- Tres pestañas para visualizar resultados:
-  - Análisis Léxico: Muestra los tokens identificados
-  - Análisis Sintáctico: Muestra el árbol de sintaxis abstracta
-  - Análisis Semántico: Muestra errores de variables y scope
+- Editor de código con fuente monoespaciada y tema oscuro
+- Botón de compilación y ejecución
+- Pestañas para visualizar resultados:
+  - **Tokens:** Muestra los tokens identificados
+  - **AST:** Muestra el árbol de sintaxis abstracta
+  - **Errores:** Muestra errores léxicos, sintácticos y semánticos
+  - **Consola:** Muestra mensajes de compilación y ejecución
 
 ### Ejemplo de uso:
 
@@ -65,6 +89,12 @@ function suma(a, b) {
 // Estructura de control
 if (x > 5) {
     let y = 20;
+    console.log(y);
+}
+
+// Uso de booleanos
+if (true) {
+    console.log("Esto siempre se imprime");
 }
 ```
 
@@ -75,15 +105,15 @@ if (x > 5) {
 - `lexer.py`: Analizador léxico
 - `parser.py`: Analizador sintáctico
 - `semantic_analyzer.py`: Analizador semántico
+- `interpreter.py`: Intérprete para ejecución de código
 - `requirements.txt`: Dependencias del proyecto
 
 ## Limitaciones
 
-- Soporte limitado para características avanzadas de JavaScript
-- No genera código ejecutable
-- No maneja todas las estructuras de control de JavaScript
-- No soporta programación orientada a objetos
+- No detecta errores de tipo (por ejemplo, operaciones entre tipos incompatibles).
+- El acceso fuera de rango en arrays y propiedades no existentes en objetos se detecta en tiempo de ejecución (intérprete), no en análisis semántico.
+- No soporta todas las características avanzadas de JavaScript.
 
-## Contribuir
+---
 
-Siéntete libre de contribuir al proyecto creando issues o pull requests. 
+¡Listo para compilar y aprender JavaScript en Python! 

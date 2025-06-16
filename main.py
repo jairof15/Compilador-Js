@@ -1,6 +1,7 @@
 from lexer import tokenize
 from parser import parser
 from semantic_analyzer import SemanticAnalyzer
+from interpreter import Interpreter
 from colorama import init, Fore, Style
 
 def main():
@@ -40,6 +41,16 @@ def main():
                         print(Fore.RED + f"- {error}" + Style.RESET_ALL)
                 else:
                     print(Fore.GREEN + "No se encontraron errores semánticos" + Style.RESET_ALL)
+                    
+                    # Ejecución del código
+                    print(Fore.CYAN + "\n=== Resultado de la Ejecución ===" + Style.RESET_ALL)
+                    interpreter = Interpreter()
+                    try:
+                        result = interpreter.interpret(ast)
+                        if result is not None:
+                            print(Fore.GREEN + f"Resultado: {result}" + Style.RESET_ALL)
+                    except Exception as e:
+                        print(Fore.RED + f"Error en la ejecución: {str(e)}" + Style.RESET_ALL)
                     
             except Exception as e:
                 print(Fore.RED + f"Error en el análisis: {str(e)}" + Style.RESET_ALL)
